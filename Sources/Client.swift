@@ -29,6 +29,11 @@
 
 //import Starscream
 
+// DWA temporary
+public struct WebSocket {
+    
+}
+
 public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     internal(set) public var connected = false
@@ -104,12 +109,13 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
         // }
     }
     
-    private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> NSData? {
+    private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> String? /* NSData? */ {
         let json: [String: AnyObject] = [
-            "id": NSDate().timeIntervalSince1970,
-            "type": "message",
-            "channel": message.channel,
-            "text": slackFormatEscaping(message.msg)
+            // DWA temporary
+            "id": "meow" as! AnyObject, /*NSDate().timeIntervalSince1970,*/
+            "type": "message" as! AnyObject,
+            "channel": message.channel as! AnyObject,
+            "text": slackFormatEscaping(message.msg) as! AnyObject
         ]
         addSentMessage(json)
         do {
@@ -134,10 +140,13 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     private func slackFormatEscaping(string: String) -> String {
-        var escapedString = string.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
-        escapedString = escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;")
-        escapedString = escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
-        return escapedString
+        
+        // var escapedString = string.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
+        // escapedString = escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;")
+        // escapedString = escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
+        // return escapedString
+        
+        return string
     }
     
     //MARK: - Client setup
@@ -226,10 +235,11 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     // MARK: - WebSocketDelegate
-    public func websocketDidConnect(socket: WebSocket) {
+    public func websocketDidConnect(socket: WebSocket ) {
     }
     
-    public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
+    // DWA temporary
+    public func websocketDidDisconnect(socket: WebSocket, error: String? /*NSError?*/) {
         connected = false
         authenticated = false
         webSocket = nil
@@ -238,19 +248,23 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
         }
     }
     
+    // DWA temporary
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        guard let data = text.dataUsingEncoding(NSUTF8StringEncoding) else {
-            return
-        }
+        // no equivalent to NSData...
+        // guard let data = text.dataUsingEncoding(NSUTF8StringEncoding) else {
+        //     return
+        // }
         do {
-            try EventDispatcher.eventDispatcher(NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject])
+            //try EventDispatcher.eventDispatcher(NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject])
+            try EventDispatcher.eventDispatcher(["Foo": "bar" as! AnyObject])
         }
         catch _ {
             
         }
     }
     
-    public func websocketDidReceiveData(socket: WebSocket, data: NSData) {
+    // DWA temporary
+    public func websocketDidReceiveData(socket: WebSocket, data: String /*NSData*/) {
     }
     
 }

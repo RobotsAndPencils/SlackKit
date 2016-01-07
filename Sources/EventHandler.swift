@@ -95,13 +95,13 @@ internal struct EventHandler {
                     }
                 }
             }
-            
-            let timeout = dispatch_time(DISPATCH_TIME_NOW, Int64(5.0 * Double(NSEC_PER_SEC)))
-            dispatch_after(timeout, dispatch_get_main_queue()) {
-                if let index = Client.sharedInstance.channels[channelID]?.usersTyping.indexOf(userID) {
-                    Client.sharedInstance.channels[channelID]?.usersTyping.removeAtIndex(index)
-                }
-            }
+            // DWA temporary
+            // let timeout = dispatch_time(DISPATCH_TIME_NOW, Int64(5.0 * Double(NSEC_PER_SEC)))
+            // dispatch_after(timeout, dispatch_get_main_queue()) {
+            //     if let index = Client.sharedInstance.channels[channelID]?.usersTyping.indexOf(userID) {
+            //         Client.sharedInstance.channels[channelID]?.usersTyping.removeAtIndex(index)
+            //     }
+            // }
         }
     }
     
@@ -458,7 +458,7 @@ internal struct EventHandler {
     
     //Mark: - User Change
     static func userChange(event: Event) {
-        if let user = event.user, id = user.id {
+        if var user = event.user, let id = user.id {
             user.preferences = Client.sharedInstance.users[id]?.preferences
             Client.sharedInstance.users[id] = user
             
