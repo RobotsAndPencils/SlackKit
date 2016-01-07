@@ -21,8 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import Foundation
-import Starscream
+#if os(Linux)
+    import Glibc // not sure if this is what we need, probably need to import our Websocket class
+#else
+    import Foundation
+#endif
+
+//import Starscream
 
 public class Client: WebSocketDelegate {
     

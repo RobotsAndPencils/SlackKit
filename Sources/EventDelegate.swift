@@ -21,7 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import Foundation
+#if os(Linux)
+    import Glibc // not sure if this is what we need
+#else
+    import Foundation
+#endif
 
 public protocol SlackEventsDelegate {
     func clientConnected()
