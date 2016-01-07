@@ -21,11 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if os(Linux)
-    import Glibc // not sure if this is what we need, probably need to import our Websocket class
-#else
-    import Foundation
-#endif
+// #if os(Linux)
+//     import Glibc // not sure if this is what we need, probably need to import our Websocket class
+// #else
+//     import Foundation
+// #endif
+
+import Foundation
 
 //import Starscream
 
@@ -109,20 +111,18 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
         // }
     }
     
-    private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> String? /* NSData? */ {
+    private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> NSData? {
         let json: [String: AnyObject] = [
             // DWA temporary
-            "id": "meow" as! AnyObject, /*NSDate().timeIntervalSince1970,*/
+            "id": String(NSDate().timeIntervalSince1970) as! AnyObject, // I think this is hardcoded for now
             "type": "message" as! AnyObject,
             "channel": message.channel as! AnyObject,
             "text": slackFormatEscaping(message.msg) as! AnyObject
         ]
         addSentMessage(json)
         do {
-            return nil
-// DWA temporary
-            // let data = try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions.PrettyPrinted)
-            // return data
+            let data = try NSJSONSerialization.dataWithJSONObject(json as! AnyObject, options: NSJSONWritingOptions.PrettyPrinted)
+            return data
         }
         catch _ {
             return nil
@@ -130,17 +130,17 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     private func addSentMessage(dictionary: [String: AnyObject]) {
-// DWA temporary
-        // var message = dictionary
-        // let ts = message["id"] as? NSNumber
-        // message.removeValueForKey("id")
-        // message["ts"] = ts?.stringValue
-        // message["user"] = self.authenticatedUser?.id
-        // sentMessages[ts!.stringValue] = Message(message: message)
+// DWA messy
+        var message = dictionary
+        guard let ts = message["id"] as? String else { return }
+        message.removeValueForKey("id")
+        message["ts"] = ts as! AnyObject
+        message["user"] = self.authenticatedUser?.id as! AnyObject
+        sentMessages[ts] = Message(message: message)
     }
     
     private func slackFormatEscaping(string: String) -> String {
-        
+        // DWA temporary
         // var escapedString = string.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
         // escapedString = escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;")
         // escapedString = escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
@@ -250,7 +250,7 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     // DWA temporary
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        // no equivalent to NSData...
+        // no equivalent to NSData (at least not of this type)
         // guard let data = text.dataUsingEncoding(NSUTF8StringEncoding) else {
         //     return
         // }
