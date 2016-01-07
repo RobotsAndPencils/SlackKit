@@ -29,7 +29,7 @@
 
 //import Starscream
 
-public class Client: WebSocketDelegate {
+public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     internal(set) public var connected = false
     internal(set) public var authenticated = false
@@ -71,35 +71,37 @@ public class Client: WebSocketDelegate {
     
     //MARK: - Connection
     public func connect() {
-        let request = NSURLRequest(URL: NSURL(string:"https://slack.com/api/rtm.start?token="+token)!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.currentQueue()!) {
-            (response, data, error) -> Void in
-            guard let data = data else {
-                return
-            }
-            do {
-                let result = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject]
-                if (result["ok"] as! Bool == true) {
-                    self.initialSetup(result)
-                    let socketURL = NSURL(string: result["url"] as! String)
-                    self.webSocket = WebSocket(url: socketURL!)
-                    self.webSocket?.delegate = self
-                    self.webSocket?.connect()
-                }
-            } catch _ {
-                print(error)
-            }
-        }
+// DWA temporary
+        // let request = NSURLRequest(URL: NSURL(string:"https://slack.com/api/rtm.start?token="+token)!)
+        // NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.currentQueue()!) {
+        //     (response, data, error) -> Void in
+        //     guard let data = data else {
+        //         return
+        //     }
+        //     do {
+        //         let result = try NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject]
+        //         if (result["ok"] as! Bool == true) {
+        //             self.initialSetup(result)
+        //             let socketURL = NSURL(string: result["url"] as! String)
+        //             self.webSocket = WebSocket(url: socketURL!)
+        //             self.webSocket?.delegate = self
+        //             self.webSocket?.connect()
+        //         }
+        //     } catch _ {
+        //         print(error)
+        //     }
+        // }
     }
     
     //MARK: - Message send
     public func sendMessage(message: String, channelID: String) {
-        if (connected) {
-            if let data = formatMessageToSlackJsonString(msg: message, channel: channelID) {
-                let string = NSString(data: data, encoding: NSUTF8StringEncoding)
-                self.webSocket?.writeString(string as! String)
-            }
-        }
+// DWA temporary
+        // if (connected) {
+        //     if let data = formatMessageToSlackJsonString(msg: message, channel: channelID) {
+        //         let string = NSString(data: data, encoding: NSUTF8StringEncoding)
+        //         self.webSocket?.writeString(string as! String)
+        //     }
+        // }
     }
     
     private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> NSData? {
@@ -111,8 +113,10 @@ public class Client: WebSocketDelegate {
         ]
         addSentMessage(json)
         do {
-            let data = try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions.PrettyPrinted)
-            return data
+            return nil
+// DWA temporary
+            // let data = try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions.PrettyPrinted)
+            // return data
         }
         catch _ {
             return nil
@@ -120,12 +124,13 @@ public class Client: WebSocketDelegate {
     }
     
     private func addSentMessage(dictionary: [String: AnyObject]) {
-        var message = dictionary
-        let ts = message["id"] as? NSNumber
-        message.removeValueForKey("id")
-        message["ts"] = ts?.stringValue
-        message["user"] = self.authenticatedUser?.id
-        sentMessages[ts!.stringValue] = Message(message: message)
+// DWA temporary
+        // var message = dictionary
+        // let ts = message["id"] as? NSNumber
+        // message.removeValueForKey("id")
+        // message["ts"] = ts?.stringValue
+        // message["user"] = self.authenticatedUser?.id
+        // sentMessages[ts!.stringValue] = Message(message: message)
     }
     
     private func slackFormatEscaping(string: String) -> String {

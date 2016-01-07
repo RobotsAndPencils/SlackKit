@@ -376,7 +376,7 @@ internal struct EventHandler {
                     }
                 }
             case "file":
-                if let id = item.file?.id, var file = Client.sharedInstance.files[id] {
+                if let id = item.file?.id, file = Client.sharedInstance.files[id] {
                     if file.reactions[key] == nil {
                         Client.sharedInstance.files[id]?.reactions[key] = Reaction(name: event.reaction, user: userID)
                     } else {
@@ -384,7 +384,7 @@ internal struct EventHandler {
                     }
                 }
             case "file_comment":
-                if let id = item.file?.id, var file = Client.sharedInstance.files[id], let commentID = item.fileCommentID {
+                if let id = item.file?.id, file = Client.sharedInstance.files[id], commentID = item.fileCommentID {
                     if file.comments[commentID]?.reactions[key] == nil {
                         Client.sharedInstance.files[id]?.comments[commentID]?.reactions[key] = Reaction(name: event.reaction, user: userID)
                     } else {
@@ -417,7 +417,7 @@ internal struct EventHandler {
                     }
                 }
             case "file":
-                if let itemFile = item.file, id = itemFile.id, var file = Client.sharedInstance.files[id] {
+                if let itemFile = item.file, id = itemFile.id, file = Client.sharedInstance.files[id] {
                     if file.reactions[key] != nil {
                         Client.sharedInstance.files[id]?.reactions[key]?.users.removeValueForKey(userID)
                     }
@@ -426,7 +426,7 @@ internal struct EventHandler {
                     }
                 }
             case "file_comment":
-                if let id = item.file?.id, var file = Client.sharedInstance.files[id], let commentID = item.fileCommentID {
+                if let id = item.file?.id, file = Client.sharedInstance.files[id], commentID = item.fileCommentID {
                     if file.comments[commentID]?.reactions[key] != nil {
                         Client.sharedInstance.files[id]?.comments[commentID]?.reactions[key]?.users.removeValueForKey(userID)
                     }
@@ -458,7 +458,7 @@ internal struct EventHandler {
     
     //Mark: - User Change
     static func userChange(event: Event) {
-        if var user = event.user, let id = user.id {
+        if let user = event.user, id = user.id {
             user.preferences = Client.sharedInstance.users[id]?.preferences
             Client.sharedInstance.users[id] = user
             
