@@ -33,7 +33,10 @@ import Foundation
 
 // DWA temporary
 public struct WebSocket {
-    
+
+    func writeString(string: String) {
+        print("Stub implementation")
+    }
 }
 
 public class Client /*: WebSocketDelegate*/ { // DWA temporary
@@ -103,18 +106,18 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     //MARK: - Message send
     public func sendMessage(message: String, channelID: String) {
 // DWA temporary
-        // if (connected) {
-        //     if let data = formatMessageToSlackJsonString(msg: message, channel: channelID) {
-        //         let string = NSString(data: data, encoding: NSUTF8StringEncoding)
-        //         self.webSocket?.writeString(string as! String)
-        //     }
-        // }
+        if (connected) {
+             if let data = formatMessageToSlackJsonString(msg: message, channel: channelID) {
+                 let string = NSString(data: data, encoding: NSUTF8StringEncoding)
+                 self.webSocket?.writeString(string as! String)
+             }
+        }
     }
     
     private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> NSData? {
         let json: [String: AnyObject] = [
             // DWA temporary
-            "id": String(NSDate().timeIntervalSince1970) as! AnyObject, // I think this is hardcoded for now
+            "id": String(NSDate().timeIntervalSince1970) as! AnyObject,
             "type": "message" as! AnyObject,
             "channel": message.channel as! AnyObject,
             "text": slackFormatEscaping(message.msg) as! AnyObject
@@ -140,13 +143,16 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     private func slackFormatEscaping(string: String) -> String {
-        // DWA temporary
-        // var escapedString = string.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
-        // escapedString = escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;")
-        // escapedString = escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
-        // return escapedString
-        
-        return string
+        // DWA There appears to be no String to NSString bridging at the moment
+
+        var escapedString = NSString(string: string)
+        var resultString: String
+        resultString = escapedString.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
+        escapedString = NSString(string: resultString)
+        resultString = escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;")
+        escapedString = NSString(string: resultString)
+        resultString = escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
+        return resultString
     }
     
     //MARK: - Client setup
