@@ -144,15 +144,10 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     private func slackFormatEscaping(string: String) -> String {
         // DWA There appears to be no String to NSString bridging at the moment
-
         var escapedString = NSString(string: string)
-        var resultString: String
-        resultString = escapedString.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
-        escapedString = NSString(string: resultString)
-        resultString = escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;")
-        escapedString = NSString(string: resultString)
-        resultString = escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
-        return resultString
+        escapedString = NSString(string: escapedString.stringByReplacingOccurrencesOfString("&", withString: "&amp;"))
+        escapedString = NSString(string: escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;"))
+        return escapedString.stringByReplacingOccurrencesOfString(">", withString: "&gt;")
     }
     
     //MARK: - Client setup
