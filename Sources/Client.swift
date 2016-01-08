@@ -240,7 +240,7 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     // DWA temporary
-    public func websocketDidDisconnect(socket: WebSocket, error: String? /*NSError?*/) {
+    public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         connected = false
         authenticated = false
         webSocket = nil
@@ -251,10 +251,8 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     // DWA temporary
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        // no equivalent to NSData (at least not of this type)
-        // guard let data = text.dataUsingEncoding(NSUTF8StringEncoding) else {
-        //     return
-        // }
+        guard let data = NSString(string: text).dataUsingEncoding(NSUTF8StringEncoding) else { return }
+
         do {
             //try EventDispatcher.eventDispatcher(NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject])
             try EventDispatcher.eventDispatcher(["Foo": "bar" as! AnyObject])
