@@ -105,7 +105,7 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     //MARK: - Message send
     public func sendMessage(message: String, channelID: String) {
-// DWA temporary
+
         if (connected) {
              if let data = formatMessageToSlackJsonString(msg: message, channel: channelID) {
                  let string = NSString(data: data, encoding: NSUTF8StringEncoding)
@@ -116,13 +116,14 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     
     private func formatMessageToSlackJsonString(message: (msg: String, channel: String)) -> NSData? {
         let json: [String: AnyObject] = [
-            // DWA temporary
+            // DWA: Messy but seems like it might work
             "id": String(NSDate().timeIntervalSince1970) as! AnyObject,
             "type": "message" as! AnyObject,
             "channel": message.channel as! AnyObject,
             "text": slackFormatEscaping(message.msg) as! AnyObject
         ]
         addSentMessage(json)
+
         do {
             let data = try NSJSONSerialization.dataWithJSONObject(json as! AnyObject, options: NSJSONWritingOptions.PrettyPrinted)
             return data
@@ -133,7 +134,7 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     private func addSentMessage(dictionary: [String: AnyObject]) {
-// DWA messy
+        // DWA messy but seems like it might work
         var message = dictionary
         guard let ts = message["id"] as? String else { return }
         message.removeValueForKey("id")
@@ -143,7 +144,7 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     }
     
     private func slackFormatEscaping(string: String) -> String {
-        // DWA There appears to be no String to NSString bridging at the moment
+        // DWA There appears to be no String to NSString bridging at the moment, hence the conversion back to NSString all the time
         var escapedString = NSString(string: string)
         escapedString = NSString(string: escapedString.stringByReplacingOccurrencesOfString("&", withString: "&amp;"))
         escapedString = NSString(string: escapedString.stringByReplacingOccurrencesOfString("<", withString: "&lt;"))
@@ -239,7 +240,6 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
     public func websocketDidConnect(socket: WebSocket ) {
     }
     
-    // DWA temporary
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         connected = false
         authenticated = false
@@ -249,21 +249,19 @@ public class Client /*: WebSocketDelegate*/ { // DWA temporary
         }
     }
     
-    // DWA temporary
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
         guard let data = NSString(string: text).dataUsingEncoding(NSUTF8StringEncoding) else { return }
 
         do {
-            //try EventDispatcher.eventDispatcher(NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject])
-            try EventDispatcher.eventDispatcher(["Foo": "bar" as! AnyObject])
+            try EventDispatcher.eventDispatcher(NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as! [String: AnyObject])
         }
         catch _ {
             
         }
     }
     
-    // DWA temporary
-    public func websocketDidReceiveData(socket: WebSocket, data: String /*NSData*/) {
+    public func websocketDidReceiveData(socket: WebSocket, data: NSData) {
+
     }
     
 }
