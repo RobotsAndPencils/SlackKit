@@ -24,15 +24,25 @@
 #if os(Linux)
     import Dispatch
 #endif
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 import Foundation
+
 #if !COCOAPODS
 import SKCore
 #endif
 
+
 public struct NetworkInterface {
 
     private let apiUrl = "https://slack.com/api/"
+    #if canImport(FoundationNetworking)
+    private let session = FoundationNetworking.URLSession(configuration: .default)
+    #else
     private let session = URLSession(configuration: .default)
+    #endif
 
     internal init() {}
 
