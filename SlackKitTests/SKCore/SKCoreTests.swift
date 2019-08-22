@@ -182,7 +182,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let action = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(action)
-    let actionBySerialization = Action(action: action)
+    let actionBySerialization = Action(action: action!)
     XCTAssertEqual(actionBySerialization.name, actionByDecoder!.name)
     XCTAssertEqual(actionBySerialization.text, actionByDecoder!.text)
     XCTAssertEqual(actionBySerialization.type, actionByDecoder!.type)
@@ -206,7 +206,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let field = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(field)
-    let attachmentFieldBySerialization = AttachmentField(field: field)
+    let attachmentFieldBySerialization = AttachmentField(field: field!)
     XCTAssertEqual(attachmentFieldBySerialization.title, attachmentFieldByDecoder!.title)
     XCTAssertEqual(attachmentFieldBySerialization.value, attachmentFieldByDecoder!.value)
     XCTAssertEqual(attachmentFieldBySerialization.short, attachmentFieldByDecoder!.short)
@@ -232,7 +232,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let field = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(field)
-    let customProfileFieldBySerialization = CustomProfileField(field: field)
+    let customProfileFieldBySerialization = CustomProfileField(field: field!)
     XCTAssertEqual(customProfileFieldBySerialization.id, customProfileFieldByDecoder!.id)
     XCTAssertEqual(customProfileFieldBySerialization.alt, customProfileFieldByDecoder!.alt)
     XCTAssertEqual(customProfileFieldBySerialization.value, customProfileFieldByDecoder!.value)
@@ -260,7 +260,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let status = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(status)
-    let doNotDisturbStatusBySerialization = DoNotDisturbStatus(status: status)
+    let doNotDisturbStatusBySerialization = DoNotDisturbStatus(status: status!)
     XCTAssertEqual(doNotDisturbStatusBySerialization.enabled, doNotDisturbStatusByDecoder!.enabled)
     XCTAssertEqual(doNotDisturbStatusBySerialization.nextDoNotDisturbStart, doNotDisturbStatusByDecoder!.nextDoNotDisturbStart)
     XCTAssertEqual(doNotDisturbStatusBySerialization.nextDoNotDisturbEnd, doNotDisturbStatusByDecoder!.nextDoNotDisturbEnd)
@@ -280,7 +280,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let edited = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(edited)
-    let editedBySerialization = Edited(edited: edited)
+    let editedBySerialization = Edited(edited: edited!)
     XCTAssertEqual(editedBySerialization.user, editedByDecoder!.user)
     XCTAssertEqual(editedBySerialization.ts, editedByDecoder!.ts)
   }
@@ -297,7 +297,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let reply = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(reply)
-    let replyBySerialization = Reply(reply: reply)
+    let replyBySerialization = Reply(reply: reply!)
     XCTAssertEqual(replyBySerialization.user, replyByDecoder!.user)
     XCTAssertEqual(replyBySerialization.ts, replyByDecoder!.ts)
   }
@@ -320,7 +320,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let icon = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(icon)
-    let teamIconBySerialization = TeamIcon(icon: icon)
+    let teamIconBySerialization = TeamIcon(icon: icon!)
     XCTAssertEqual(teamIconBySerialization.image34, teamIconByDecoder!.image34)
     XCTAssertEqual(teamIconBySerialization.image44, teamIconByDecoder!.image44)
     XCTAssertEqual(teamIconBySerialization.image68, teamIconByDecoder!.image68)
@@ -344,7 +344,7 @@ final class SKCoreTests: XCTestCase {
     XCTAssertNotNil(jsonData)
     let topic = try? JSONSerialization.jsonObject(with: jsonData!, options: []) as? [String: Any]
     XCTAssertNotNil(topic)
-    let topicBySerialization = Topic(topic: topic)
+    let topicBySerialization = Topic(topic: topic!)
     XCTAssertEqual(topicBySerialization.value, topicByDecoder!.value)
     XCTAssertEqual(topicBySerialization.creator, topicByDecoder!.creator)
     XCTAssertEqual(topicBySerialization.lastSet, topicByDecoder!.lastSet)
